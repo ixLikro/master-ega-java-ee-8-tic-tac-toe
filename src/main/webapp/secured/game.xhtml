@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://xmlns.jcp.org/jsf/core"
+         xmlns:h="http://xmlns.jcp.org/jsf/html"
+         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+         xmlns:myc = "http://java.sun.com/jsf/composite/components">
+<h:head>
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{uiModelGame.before}"/>
+    </f:metadata>
+</h:head>
+<body>
+
+    <f:websocket channel="updateGame">
+        <f:ajax event="#{game.id}" render=":gameview" />
+    </f:websocket>
+
+    <h:panelGroup id="gameview" rendered="#{not empty game}">
+        <h2>Tick-Tack-To Spiel mit ID: #{game.id}</h2>
+        <h:form rendered="#{not uiModelGame.gameRunning}">
+            Keine Lust mehr?
+            <h:commandButton value="Spiel verlassen" action="#{uiModelGame.quitGame()}" />
+        </h:form>
+        <p>
+            Du bist #{uiModelGame.amIPlayer1() ? "Spieler 1" : "Spieler 2"} und spielst mit
+            <h:graphicImage height="15" style="margin-left: 10px" value="#{uiModelGame.amIPlayer1() ? '../images/player_1_icon.png' : '../images/player_2_icon.png'}" />
+        </p>
+        <b>
+            <h:panelGroup rendered="#{game.state == 'WAITING_FOR_PLAYER'}">
+                <p> Auf Spieler 2 warten... </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{game.state == 'PLAYER_1_TURN'}">
+                <p> #{uiModelGame.amIPlayer1() ? "Du bist an der Reihe!" : "Auf Zug von Spieler 1 warten..."} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{game.state == 'PLAYER_2_TURN'}">
+                <p> #{uiModelGame.amIPlayer2() ? "Du bist an der Reihe!" : "Auf Zug von Spieler 2 warten..."} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{game.state == 'PLAYER_1_WON'}">
+                <p> #{uiModelGame.amIPlayer1() ? "Herzlichen Glückwunsch! Du hast gewonnen 🎉🎉" : "Da hast du wohl verloren 😕"} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{game.state == 'PLAYER_2_WON'}">
+                <p> #{uiModelGame.amIPlayer2() ? "Herzlichen Glückwunsch! Du hast gewonnen 🎉🎉" : "Da hast du wohl verloren 😕"} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{game.state == 'DRAW'}">
+                <p> Das Spiel ging Unentschieden aus. </p>
+            </h:panelGroup>
+        </b>
+
+        <br/>
+        <br/>
+        <h:panelGrid id = "panel" columns = "3"
+                     cellspacing = "10" style="margin-left: 100px">
+
+            <myc:gameCell x="0" y="0" />
+            <myc:gameCell x="1" y="0" />
+            <myc:gameCell x="2" y="0" />
+            <myc:gameCell x="0" y="1" />
+            <myc:gameCell x="1" y="1" />
+            <myc:gameCell x="2" y="1" />
+            <myc:gameCell x="0" y="2" />
+            <myc:gameCell x="1" y="2" />
+            <myc:gameCell x="2" y="2" />
+
+        </h:panelGrid>
+
+    </h:panelGroup>
+    <h:panelGroup rendered="#{empty game}">
+        <p>[ERROR] Session Data corrupted! Please reload the Webseite.</p>
+    </h:panelGroup>
+
+
+    </body>
+</html>

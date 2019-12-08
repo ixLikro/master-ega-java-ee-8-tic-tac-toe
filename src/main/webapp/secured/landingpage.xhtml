@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://xmlns.jcp.org/jsf/core"
+         xmlns:h="http://xmlns.jcp.org/jsf/html"
+         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+         xmlns:myc = "http://java.sun.com/jsf/composite/components">
+<h:head>
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{uiModelLandingPage.before}"/>
+    </f:metadata>
+</h:head>
+<body>
+<h:panelGroup rendered="#{not empty name}">
+    <h2>Moin #{name.name}!</h2>
+    <h:form>
+        Nicht #{name.name}?! Dann log dich hier aus:
+        <h:commandButton value="logout" action="#{uiModelLandingPage.logout}" />
+    </h:form>
+
+    <h:panelGroup rendered="#{not empty statistic}">
+
+        <p>
+            Du hast bisher <b>#{statistic.gameCount}</b> Spiele gespielt. <br/>
+            Davon hast du <b>#{statistic.winCount}</b> Spiele gewonnen. <br/>
+            Das macht eine Gewinrate von : <b>#{(statistic.winCount/statistic.gameCount) * 100} %.</b>
+        </p>
+        <h:form>
+            <h:commandLink value="Hier" action="#{uiModelLandingPage.logout}" />
+            geht es zur Spiele Historie.
+        </h:form>
+
+    </h:panelGroup>
+
+    <br/>
+    <br/>
+    <h2>Multiplayer</h2>
+    <h4>Spiel erstellen:</h4>
+    <h:form>
+        Hier kannst du ein neues Spiel erstellen und warten bis ein Mitspieler beitritt: <br/>
+        <h:commandButton value="Spiel erstellen" action="#{uiModelLandingPage.createNewGame}" />
+    </h:form>
+    <h4>Spiel beiteten:</h4>
+    <h:panelGroup id="waitingGameLay">
+        <p>
+            Oder du tritzt einem bereits erstelltem Spiel bei. <br/>
+            Momentan sind <b>#{uiModelLandingPage.getWaitingGames().size()}</b> offen.
+        </p>
+
+        <h:panelGroup rendered="#{not empty uiModelLandingPage.getWaitingGames()}">
+            <h:form>
+                <h:dataTable style="margin-top: 10px;" id="id" value="#{uiModelLandingPage.getWaitingGames()}" var="oneGame" border="1" cellpadding="10">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="id"/>
+                        </f:facet>
+                        <h:outputText value="#{oneGame.id}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ersteller"/>
+                        </f:facet>
+                        <h:outputText value="#{oneGame.player1.name}" />
+                    </h:column>
+                    <h:column>
+                        <h:commandButton value="Spiel beitreten" action="#{uiModelLandingPage.joinGame(oneGame)}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </h:panelGroup>
+    </h:panelGroup>
+
+</h:panelGroup>
+<f:websocket channel="waitingGame">
+    <f:ajax event="updateNow" render=":waitingGameLay" />
+</f:websocket>
+<h:panelGroup rendered="#{empty name}">
+    <p>[ERROR] No Session Data-Found! Please reload the Webseite.</p>
+</h:panelGroup>
+
+</body>
+</html>
