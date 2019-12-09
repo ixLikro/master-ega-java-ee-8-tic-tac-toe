@@ -33,6 +33,9 @@
             <h:panelGroup rendered="#{oneGame.state == 'PLAYER_2_WON'}">
                 <p> #{uiModelHistory.amIPlayer2(oneGame) ? "Gewonnen 🎉" : "Verloren 😕"} </p>
             </h:panelGroup>
+            <h:panelGroup rendered="#{oneGame.state == 'DRAW'}">
+                <p> Unentschieden </p>
+            </h:panelGroup>
         </h:column>
     </h:dataTable>
 </body>
