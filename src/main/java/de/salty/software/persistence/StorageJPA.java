@@ -4,6 +4,7 @@ import de.salty.software.entity.GameDTO;
 import de.salty.software.entity.GameState;
 import de.salty.software.entity.PlayerDTO;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.*;
@@ -11,18 +12,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class StorageJPA {
 
-    private EntityManagerFactory factory;
+    @PersistenceContext
     private EntityManager manager;
 
     private static final Logger log = Logger.getAnonymousLogger();
 
     public StorageJPA() {
-        factory = Persistence.createEntityManagerFactory("storage1");
-        manager = factory.createEntityManager();
     }
 
     private PlayerDTO getPlayerByName(String name){
@@ -65,35 +63,27 @@ public class StorageJPA {
     }
 
     public void deleteGame(GameDTO gameDTO){
-        manager.getTransaction().begin();
+        if(!manager.contains(gameDTO)) gameDTO = manager.merge(gameDTO);
         manager.remove(gameDTO);
-        manager.getTransaction().commit();
 
         log.log(Level.INFO, "{0}\n\twas successfully deleted!", gameDTO.toString());
     }
 
     public GameDTO persistGame(GameDTO gameDTO){
-        manager.getTransaction().begin();
+        if(!manager.contains(gameDTO)) gameDTO = manager.merge(gameDTO);
         manager.persist(gameDTO);
-        manager.getTransaction().commit();
 
         log.log(Level.INFO, "{0}\n\twas successfully saved!", gameDTO.toString());
         return gameDTO;
     }
 
     public GameDTO updateGame(GameDTO gameToUpdate){
-        manager.getTransaction().begin();
-        GameDTO gameDTO = manager.merge(gameToUpdate);
-        manager.getTransaction().commit();
-
-        return gameDTO;
+        return manager.merge(gameToUpdate);
     }
 
 
     public PlayerDTO persistPLayer(PlayerDTO player){
-        manager.getTransaction().begin();
         manager.persist(player);
-        manager.getTransaction().commit();
 
         log.log(Level.INFO, "{0}\n\twas successfully saved!", player.toString());
         return player;

@@ -30,6 +30,9 @@ public class UiModelGame {
     @Inject @Push
     private PushContext updateGame;
 
+    @Inject @Push
+    private PushContext waitingGame;
+
     private static final Logger log = Logger.getAnonymousLogger();
 
     public void before() {
@@ -50,7 +53,6 @@ public class UiModelGame {
     }
 
     public String updateGameFromDBInSession(){
-
         Game old = (Game) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .get("game");
 
@@ -135,6 +137,9 @@ public class UiModelGame {
                 storage.deleteGame(gameDTO);
             }
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("game");
+
+            waitingGame.send("updateNow");
+
             return "/secured/landingpage.xhtml?faces-redirect=true";
         }
         return null;

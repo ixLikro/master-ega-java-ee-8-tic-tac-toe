@@ -2,10 +2,10 @@ package de.salty.software.entity;
 
 import javax.inject.Named;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-@Named
 @Entity
 public class GameDTO implements Serializable {
 
@@ -21,7 +21,8 @@ public class GameDTO implements Serializable {
     @ManyToOne
     private PlayerDTO player2;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     private List<MoveDTO> allMoveDTOS;
 
 

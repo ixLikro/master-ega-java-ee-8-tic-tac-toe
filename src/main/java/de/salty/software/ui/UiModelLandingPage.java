@@ -14,12 +14,12 @@ import javax.faces.push.Push;
 import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 @Named
-@SessionScoped
 public class UiModelLandingPage implements Serializable {
 
     @Inject
@@ -27,6 +27,9 @@ public class UiModelLandingPage implements Serializable {
 
     @Inject @Push
     private PushContext updateGame;
+
+    @Inject @Push
+    private PushContext waitingGame;
 
     public void before() {
         //if in-game redirect to the game
@@ -54,6 +57,7 @@ public class UiModelLandingPage implements Serializable {
         return storage.getAllWaitingGames();
     }
 
+
     public String createNewGame() {
 
         GameDTO gameDTO = new GameDTO();
@@ -62,6 +66,8 @@ public class UiModelLandingPage implements Serializable {
         gameDTO.setStatus(GameState.WAITING_FOR_PLAYER);
         gameDTO = storage.persistGame(gameDTO);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("game", new Game(gameDTO));
+
+        waitingGame.send("updateNow");
 
         return "game?faces-redirect=true";
     }
@@ -85,6 +91,8 @@ public class UiModelLandingPage implements Serializable {
 
         //push an update
         updateGame.send(game.getId());
+
+        waitingGame.send("updateNow");
 
         return "game?faces-redirect=true";
     }

@@ -3,12 +3,11 @@ package de.salty.software.entity;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Named
 @Entity
-@SessionScoped
 public class PlayerDTO implements Serializable {
 
     @Id

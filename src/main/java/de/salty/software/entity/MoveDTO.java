@@ -4,7 +4,6 @@ import javax.inject.Named;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Named
 @Entity
 public class MoveDTO implements Serializable {
 
