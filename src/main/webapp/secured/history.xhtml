@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://xmlns.jcp.org/jsf/core"
+         xmlns:h="http://xmlns.jcp.org/jsf/html"
+         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+         xmlns:myc = "http://java.sun.com/jsf/composite/components">
+<h:head>
+</h:head>
+<body>
+    <h2>Deine vergangenen Spiel</h2>
+    <p>Du hast #{uiModelHistory.myGames.size()} spiele absolviert.</p>
+
+    <h:dataTable style="margin-top: 10px;" id="id" value="#{uiModelHistory.myGames}" var="oneGame" border="1" cellpadding="10">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Spiel"/>
+            </f:facet>
+            <myc:fieldMini game="#{oneGame}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Ergebnis: "/>
+            </f:facet>
+            <h:panelGroup rendered="#{oneGame.state == 'PLAYER_1_TURN'}">
+                <p> #{uiModelHistory.amIPlayer1(oneGame) ? "Du bist an der Reihe!" : "Auf Zug von Spieler 1 warten..."} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{oneGame.state == 'PLAYER_2_TURN'}">
+                <p> #{uiModelHistory.amIPlayer2(oneGame) ? "Du bist an der Reihe!" : "Auf Zug von Spieler 2 warten..."} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{oneGame.state == 'PLAYER_1_WON'}">
+                <p> #{uiModelHistory.amIPlayer1(oneGame) ? "Gewonnen 🎉" : "Verloren 😕"} </p>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{oneGame.state == 'PLAYER_2_WON'}">
+                <p> #{uiModelHistory.amIPlayer2(oneGame) ? "Gewonnen 🎉" : "Verloren 😕"} </p>
+            </h:panelGroup>
+        </h:column>
+    </h:dataTable>
+</body>
+</html>

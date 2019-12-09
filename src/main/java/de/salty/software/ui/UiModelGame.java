@@ -60,7 +60,7 @@ public class UiModelGame {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .put("game", new Game(newGame));
 
-        return "/secured/game.xhtml";
+        return "/secured/game.xhtml?faces-redirect=true";
     }
 
     public boolean amIPlayer1(){
@@ -135,7 +135,7 @@ public class UiModelGame {
                 storage.deleteGame(gameDTO);
             }
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("game");
-            return "/secured/landingpage.xhtml";
+            return "/secured/landingpage.xhtml?faces-redirect=true";
         }
         return null;
     }
