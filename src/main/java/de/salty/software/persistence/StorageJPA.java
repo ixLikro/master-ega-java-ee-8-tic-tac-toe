@@ -6,10 +6,7 @@ import de.salty.software.entity.PlayerDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +26,7 @@ public class StorageJPA {
     }
 
     private PlayerDTO getPlayerByName(String name){
-        Query q = manager.createQuery("SELECT p FROM PlayerDTO p where p.name='" + name+"'");
+        TypedQuery q = manager.createQuery("SELECT p FROM PlayerDTO p where p.name='" + name+"'", PlayerDTO.class);
 
         List results = q.getResultList();
 
@@ -41,22 +38,22 @@ public class StorageJPA {
     }
 
     public List<GameDTO> getAllGames(){
-        Query q = manager.createQuery("SELECT p FROM GameDTO p");
+        TypedQuery<GameDTO> q = manager.createQuery("SELECT p FROM GameDTO p", GameDTO.class);
         return q.getResultList();
     }
 
     public List<GameDTO> getAllGamesFromPlayer(PlayerDTO player){
-        Query q = manager.createQuery("SELECT g FROM GameDTO g WHERE g.player1.id="+player.getId()+" or g.player2.id="+player.getId());
+        TypedQuery<GameDTO> q = manager.createQuery("SELECT g FROM GameDTO g WHERE g.player1.id="+player.getId()+" or g.player2.id="+player.getId(), GameDTO.class);
         return q.getResultList();
     }
 
     public List<GameDTO> getAllWaitingGames(){
-        Query q = manager.createQuery("SELECT g FROM GameDTO g WHERE g.status='"+ GameState.WAITING_FOR_PLAYER.ordinal()+"'");
+        TypedQuery<GameDTO> q = manager.createQuery("SELECT g FROM GameDTO g WHERE g.status='"+ GameState.WAITING_FOR_PLAYER.ordinal()+"'", GameDTO.class);
         return q.getResultList();
     }
 
     public GameDTO getGame(long id){
-        Query q = manager.createQuery("SELECT g FROM GameDTO g where g.id=" + id);
+        TypedQuery q = manager.createQuery("SELECT g FROM GameDTO g where g.id=" + id, GameDTO.class);
 
         List results = q.getResultList();
 
