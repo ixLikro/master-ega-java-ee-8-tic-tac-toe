@@ -16,7 +16,7 @@
     </f:websocket>
 
     <h:panelGroup id="gameview" rendered="#{not empty game}">
-        <h2>Tick-Tack-To Spiel mit ID: #{game.id}</h2>
+        <h2>Tic-Tac-Toe Spiel mit ID: #{game.id}</h2>
         <h:form rendered="#{not uiModelGame.gameRunning}">
             Keine Lust mehr?
             <h:commandButton value="Spiel verlassen" action="#{uiModelGame.quitGame()}" />

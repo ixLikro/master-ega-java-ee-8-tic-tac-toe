@@ -6,7 +6,7 @@ import de.salty.software.entity.MoveDTO;
 import java.util.List;
 
 /**
- * represent a tick tack to field
+ * represent a tic tac toe field
  * --------
  * 00|01|02
  * 10|11|12

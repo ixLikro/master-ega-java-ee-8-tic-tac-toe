@@ -1,6 +1,6 @@
 # Master: Entwicklung großer Anwendungssysteme
 
-### A tick-tack-toe multiplayer Application to get in touch with
+### A tic-tac-toe multiplayer Application to get in touch with
 - Java EE
 - Managed Beans
 - JPA
@@ -10,5 +10,5 @@
 Tested with [Wildfly 18.0.0.Final](https://wildfly.org/downloads/)
 
 
-![gif that shows 2 games](https://github.com/ixLikro/master-ega-java-ee-8-tick-tack-toe/blob/master/images/exampleGame.gif?raw=true)
+![gif that shows 2 games](https://github.com/ixLikro/master-ega-java-ee-8-tic-tac-toe/blob/master/images/exampleGame.gif?raw=true)
 
