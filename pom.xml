@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.pdbm</groupId>
-	<artifactId>master-ega-java-ee-8-customer</artifactId>
+	<artifactId>master-ega-java-ee-8-tickTacktoe</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	<name>Java EE 8 TickTackTo</name>
+	<name>Java EE 8 TickTackToe</name>
 	<description></description>
 
 	<properties>
@@ -42,7 +42,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>master-ega-java-ee-8-tickTackTo</finalName>
+		<finalName>master-ega-java-ee-8-tickTackToe</finalName>
 	</build>
 
 </project>
